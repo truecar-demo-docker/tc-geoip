@@ -4,7 +4,7 @@ require 'maxminddb'
 set :bind, '0.0.0.0'
 
 before do
-  @db = MaxMindDB.new('/maxminddb/GeoLite2-City.mmdb')
+  @db = MaxMindDB.new('/maxminddb/GeoIP2-City.mmdb')
   content_type 'application/json'
 end
 

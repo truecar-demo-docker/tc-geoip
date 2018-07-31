@@ -1,26 +1,28 @@
-FROM ruby:2.4
+FROM drecom/ubuntu-ruby:2.4.4
 
 ENV LC_ALL=C.UTF-8
 ENV LANG=C.UTF-8
 ENV LANGUAGE=C.UTF-8
 ENV RACK_ENV=production
 
-RUN apt-get update -qq
-RUN apt-get install -fqq
-RUN apt-get install -yqq build-essential net-tools apt-utils libpq-dev ntp wget git
+RUN apt-get update && apt-get install -y \
+    apt-utils \
+    build-essential \
+    libpq-dev \
+    net-tools \
+    software-properties-common \
+  && rm -rf /var/lib/apt/lists/*
 
-RUN service ntp stop
-RUN apt-get install -yqq fake-hwclock
-RUN ntpd -gq &
-RUN service ntp start
+RUN gem install maxminddb sinatra rack
 
 RUN mkdir -p /maxminddb
 WORKDIR /maxminddb
 
-RUN wget http://geolite.maxmind.com/download/geoip/database/GeoLite2-City.tar.gz
-RUN tar -xvzf /maxminddb/GeoLite2-City.tar.gz && mv /maxminddb/GeoLite2-City_* /maxminddb/GeoLite2-City && mv /maxminddb/GeoLite2-City/GeoLite2-City.mmdb /maxminddb/GeoLite2-City.mmdb
-
-RUN gem install maxminddb sinatra rack
+RUN add-apt-repository ppa:maxmind/ppa && apt-get update && apt-get install -y \
+    geoipupdate \
+  && rm -rf /var/lib/apt/lists/*
+COPY GeoIP.conf /usr/local/etc/
+RUN /usr/bin/geoipupdate -f /usr/local/etc/GeoIP.conf -d /maxminddb
 
 EXPOSE 8080
 
