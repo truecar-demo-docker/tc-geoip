@@ -28,4 +28,6 @@ EXPOSE 8080
 
 COPY ./server.rb /maxminddb/server.rb
 
+RUN wget https://raw.git.corp.tc/infra/universal-build-script/master/secrets.sh && chmod +x ./secrets.sh
+
 CMD ["ruby", "/maxminddb/server.rb", "-p", "8080"]
