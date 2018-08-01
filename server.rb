@@ -12,7 +12,7 @@ get %r>/api/?> do
   @db.lookup(params[:ip]).to_hash.to_json
 end
 
-get %r>/internal/health/?> do
+get %r>/internal/(health|test)/?> do
   content_type 'text/plain'
   'IMOK'
 end
