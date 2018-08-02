@@ -1,7 +1,9 @@
 require 'sinatra'
 require 'maxminddb'
+require 'puma'
 
 set :bind, '0.0.0.0'
+set :server, :puma
 
 before do
   @db = MaxMindDB.new('/maxminddb/GeoIP2-City.mmdb')

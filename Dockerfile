@@ -13,7 +13,12 @@ RUN apt-get update && apt-get install -y \
     software-properties-common \
   && rm -rf /var/lib/apt/lists/*
 
-RUN gem install maxminddb sinatra rack
+RUN gem install --no-document \
+    maxminddb \
+    puma \
+    rack \
+    sinatra \
+  && echo 'Gem finish'
 
 RUN mkdir -p /maxminddb
 WORKDIR /maxminddb
@@ -27,6 +32,8 @@ RUN /usr/bin/geoipupdate -f /usr/local/etc/GeoIP.conf -d /maxminddb
 EXPOSE 8080
 
 COPY ./server.rb /maxminddb/server.rb
+RUN mkdir -p /maxminddb/config
+COPY ./config/puma.rb /maxminddb/config/puma.rb
 
 RUN wget https://raw.git.corp.tc/infra/universal-build-script/master/secrets.sh && chmod +x ./secrets.sh
 
