@@ -20,21 +20,25 @@ RUN gem install --no-document \
     sinatra \
   && echo 'Gem finish'
 
-RUN mkdir -p /maxminddb
-WORKDIR /maxminddb
-
 RUN add-apt-repository ppa:maxmind/ppa && apt-get update && apt-get install -y \
     geoipupdate \
   && rm -rf /var/lib/apt/lists/*
-COPY GeoIP.conf /usr/local/etc/
-RUN /usr/bin/geoipupdate -f /usr/local/etc/GeoIP.conf -d /maxminddb
 
-EXPOSE 8080
+RUN mkdir -p /maxminddb
+WORKDIR /maxminddb
+
+ADD https://raw.git.corp.tc/infra/universal-build-script/master/secrets.sh .
+RUN chmod +x ./secrets.sh
 
 COPY ./server.rb /maxminddb/server.rb
 RUN mkdir -p /maxminddb/config
 COPY ./config/puma.rb /maxminddb/config/puma.rb
 
-RUN wget https://raw.git.corp.tc/infra/universal-build-script/master/secrets.sh && chmod +x ./secrets.sh
+COPY GeoIP.conf /usr/local/etc/
+# This is a cache-buster
+ADD https://www.random.org/integers/?num=1&min=1&max=1000&col=1&base=10&format=plain&rnd=new .
+RUN /usr/bin/geoipupdate -f /usr/local/etc/GeoIP.conf -d /maxminddb
+
+EXPOSE 8080
 
 CMD ["ruby", "/maxminddb/server.rb", "-p", "8080"]
