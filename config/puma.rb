@@ -14,7 +14,7 @@ max_threads = max_threads.between?(1, MAX_THREADS) ? max_threads : DEFAULT_THREA
 min_threads = [
   ENV.fetch('PUMA_THREADS_MAX') { MAX_THREADS + 1 }.to_i,
   ENV.fetch('PUMA_THREADS') { MAX_THREADS + 1 }.to_i,
-  ENV.fetch('PUMA_THREADS_MIN') { 0 }.to_i,
+  ENV.fetch('PUMA_THREADS_MIN') { MAX_THREADS + 1 }.to_i,
 ].min
 min_threads = min_threads.between?(1, MAX_THREADS) ? min_threads : DEFAULT_THREADS
 
