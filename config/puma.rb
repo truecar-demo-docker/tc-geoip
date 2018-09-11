@@ -16,12 +16,10 @@ min_threads = [
   ENV.fetch('PUMA_THREADS') { MAX_THREADS + 1 }.to_i,
   ENV.fetch('PUMA_THREADS_MIN') { MAX_THREADS + 1 }.to_i,
 ].min
-min_threads = min_threads.between?(1, MAX_THREADS) ? min_threads : DEFAULT_THREADS
+min_threads = min_threads.between?(0, MAX_THREADS) ? min_threads : DEFAULT_THREADS
 
 puma_workers = ENV.fetch('PUMA_WORKERS') { DEFAULT_WORKERS }.to_i
 puma_workers = puma_workers.between?(1, MAX_WORKERS) ? puma_workers : DEFAULT_WORKERS
 
 workers puma_workers
 threads min_threads, max_threads
-
-preload_app!
