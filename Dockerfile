@@ -8,9 +8,15 @@ ENV RACK_ENV=production
 RUN apt-get update && apt-get install -y \
     apt-utils \
     build-essential \
+    curl \
     libpq-dev \
     net-tools \
+    python \
+    python-pip \
     software-properties-common \
+  && pip --no-cache-dir install --upgrade pip \
+  && pip --no-cache-dir install awscli \
+  && update-ca-certificates \
   && rm -rf /var/lib/apt/lists/*
 
 RUN gem install --no-document \
