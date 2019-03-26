@@ -23,3 +23,6 @@ puma_workers = puma_workers.between?(1, MAX_WORKERS) ? puma_workers : DEFAULT_WO
 
 workers puma_workers
 threads min_threads, max_threads
+
+# Disable request logging because ALB logging is sufficient
+quiet

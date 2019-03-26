@@ -4,6 +4,7 @@ require 'puma'
 
 set :bind, '0.0.0.0'
 set :server, :puma
+set :logging, nil
 
 configure do
   set :db, MaxMindDB.new('/maxminddb/GeoIP2-City.mmdb')
