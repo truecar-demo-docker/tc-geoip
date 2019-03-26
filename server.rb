@@ -20,5 +20,5 @@ end
 
 get %r>/internal/(health|test)/?> do
   content_type 'text/plain'
-  'IMOK'
+  settings.db.lookup('127.0.0.1').to_hash.to_json + "\nIMOK\n"
 end
