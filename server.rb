@@ -1,10 +1,17 @@
-require 'sinatra'
+require 'ddtrace'
 require 'maxminddb'
 require 'puma'
+require 'sinatra'
 
 set :bind, '0.0.0.0'
 set :server, :puma
 set :logging, nil
+
+Datadog.configure do |c|
+  c.tracer hostname: '172.17.0.1'
+  c.use :sinatra, { service_name: 'tc-geoip.sinatra' }
+  c.use :rack, { quantize: { query: { show: ['ip'] } }, service_name: 'tc-geoip.rack', request_queuing: true, web_service_name: 'aws/alb' }
+end
 
 configure do
   set :db, MaxMindDB.new('/maxminddb/GeoIP2-City.mmdb')
