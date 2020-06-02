@@ -41,7 +41,9 @@ COPY ./server.rb /maxminddb/server.rb
 RUN mkdir -p /maxminddb/config
 COPY ./config/puma.rb /maxminddb/config/puma.rb
 
-COPY GeoIP.conf /usr/local/etc/
+COPY scripts/GeoIP.sh /usr/local/bin/
+RUN chmod a+x /usr/local/bin/GeoIP.sh && /usr/local/bin/GeoIP.sh
+
 # This is a cache-buster
 ADD https://www.random.org/integers/?num=1&min=1&max=1000&col=1&base=10&format=plain&rnd=new .
 RUN /usr/bin/geoipupdate -f /usr/local/etc/GeoIP.conf -d /maxminddb

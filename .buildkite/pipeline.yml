@@ -1,0 +1,31 @@
+---
+steps:
+  - label: ':docker: Build and Push'
+    command: 'echo "Docker build"'
+    plugins:
+      - seek-oss/docker-ecr-cache#v1.6.0:
+          ecr-name: tc-geoip
+          additional-build-args: '--progress=plain'
+      - seek-oss/docker-ecr-publish#v1.4.0:
+          cache-from:
+            - ecr://tc-geoip
+          ecr-name: tc-geoip
+          additional-build-args: '--progress=plain'
+          branch-tags:
+            - ${IMAGE_TAG}
+          default-tags:
+            - latest
+            - ${IMAGE_TAG}
+    env:
+      DOCKER_BUILDKIT: "1"
+
+  - wait: ~
+
+  - label: 'Upload to spacepods'
+    command: 'echo "I love spacepods"'
+    plugins:
+      - https://git.corp.tc/infra/spacepods-buildkite-plugin.git#v7:
+          component_name: ${BUILDKITE_PIPELINE_SLUG}
+          image_tag: ${IMAGE_TAG}
+    env:
+      SPACEPODS_API_TOKEN: 'ssm-parameter:/build/common/spacepods-api-token'
