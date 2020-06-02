@@ -1,4 +1,4 @@
-FROM drecom/ubuntu-ruby:2.5.1
+FROM drecom/ubuntu-ruby:2.5.1 AS baseimage
 
 ENV LC_ALL=C.UTF-8
 ENV LANG=C.UTF-8
@@ -30,6 +30,8 @@ RUN gem install --no-document \
 RUN add-apt-repository ppa:maxmind/ppa && apt-get update && apt-get install -y \
     geoipupdate \
   && rm -rf /var/lib/apt/lists/*
+
+FROM baseimage
 
 RUN mkdir -p /maxminddb
 WORKDIR /maxminddb

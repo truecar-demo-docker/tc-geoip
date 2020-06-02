@@ -4,10 +4,12 @@ steps:
     command: 'echo "Docker build"'
     plugins:
       - seek-oss/docker-ecr-cache#v1.6.0:
-          ecr-name: tc-geoip
+          target: baseimage
+          ecr-name: cache/tc-geoip
           additional-build-args: '--progress=plain'
       - seek-oss/docker-ecr-publish#v1.4.0:
           cache-from:
+            - ecr://cache/tc-geoip
             - ecr://tc-geoip
           ecr-name: tc-geoip
           additional-build-args: '--progress=plain'
