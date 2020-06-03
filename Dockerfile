@@ -5,8 +5,8 @@ ENV LANG=C.UTF-8
 ENV LANGUAGE=C.UTF-8
 ENV RACK_ENV=production
 
-ARG LICENSE_KEY=blah
-ARG LICENSE_USERID=blah
+ARG LICENSE_KEY
+ARG LICENSE_USERID
 
 RUN apt-get update && apt-get install -y \
     apt-utils \
