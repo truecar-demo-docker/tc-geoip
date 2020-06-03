@@ -17,14 +17,14 @@ RUN apt-get update && apt-get install -y \
     python3 \
     python3-pip \
     software-properties-common \
-  && pip --no-cache-dir install --upgrade pip \
+  && pip3 --no-cache-dir install --upgrade pip \
   && pip --no-cache-dir install awscli \
   && update-ca-certificates \
   && rm -rf /var/lib/apt/lists/*
 
 RUN gem install --no-document \
     ddtrace \
-    maxminddb \
+    maxmind-db \
     puma \
     rack \
     sinatra \
