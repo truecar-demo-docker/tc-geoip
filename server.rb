@@ -24,11 +24,7 @@ end
 
 get %r>/api/?> do
   record = settings.db.get(params[:ip])
-  if record.nil?
-    '{}'
-  else
-    record.to_hash.to_json
-  end
+  record.nil? ?  '{}' : record.to_hash.to_json
 end
 
 get %r>/internal/(health|test)/?> do
