@@ -1,4 +1,4 @@
-FROM drecom/ubuntu-ruby:2.5.3
+FROM ruby:2.5
 
 ENV LC_ALL=C.UTF-8
 ENV LANG=C.UTF-8
@@ -30,9 +30,7 @@ RUN gem install --no-document \
     sinatra \
   && echo 'Gem finish'
 
-RUN add-apt-repository ppa:maxmind/ppa && apt-get update && apt-get install -y \
-    geoipupdate \
-  && rm -rf /var/lib/apt/lists/*
+RUN curl -Ls https://github.com/maxmind/geoipupdate/releases/download/v4.3.0/geoipupdate_4.3.0_linux_386.tar.gz | tar xvfz - --strip=1 -C /usr/bin geoipupdate_4.3.0_linux_386/geoipupdate
 
 RUN mkdir -p /maxminddb
 WORKDIR /maxminddb
