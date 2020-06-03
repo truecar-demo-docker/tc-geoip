@@ -1,8 +1,5 @@
 #!/bin/bash
 set -e
-# AWS_DEFAULT_REGION=us-west-2 aws ssm get-parameter --name /build/tc-geoip/LICENSE --with-decryption --query 'Parameter.Value'
-# CONFIG_LICENSE > /usr/local/etc/GeoIP.conf
-
 
 cat << EOF > /usr/local/etc/GeoIP.conf
 # If you purchase a subscription to the GeoIP database,
