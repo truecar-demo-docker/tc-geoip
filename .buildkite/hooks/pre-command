@@ -1,0 +1,13 @@
+#!/bin/bash
+
+set -euox pipefail
+
+if [ "${BUILDKITE_COMMAND}" == "buildkite-agent pipeline upload" ]; then
+    image_registry_repository="${REGISTRY_HOST}/${BUILDKITE_PIPELINE_SLUG}"
+    export IMAGE_TAG="$(tc-build-number "${BUILDKITE_PIPELINE_SLUG}")"
+    export DOCKER_TAG="${image_registry_repository}:${IMAGE_TAG}"
+
+    # Some value to use to specifically label the cache image.
+    # Should be based around something that involves an expensive operation that may not change often.
+    # export CACHE_ID=
+fi

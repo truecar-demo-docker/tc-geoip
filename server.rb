@@ -1,5 +1,6 @@
 require 'ddtrace'
-require 'maxminddb'
+require 'json'
+require 'maxmind/db'
 require 'puma'
 require 'sinatra'
 
@@ -14,7 +15,7 @@ Datadog.configure do |c|
 end
 
 configure do
-  set :db, MaxMindDB.new('/maxminddb/GeoIP2-City.mmdb')
+  set :db, MaxMind::DB.new('/maxminddb/GeoIP2-City.mmdb', mode: MaxMind::DB::MODE_MEMORY)
 end
 
 before do
@@ -22,10 +23,11 @@ before do
 end
 
 get %r>/api/?> do
-  settings.db.lookup(params[:ip]).to_hash.to_json
+  record = settings.db.get(params[:ip])
+  record.nil? ?  '{}' : record.to_hash.to_json
 end
 
 get %r>/internal/(health|test)/?> do
   content_type 'text/plain'
-  settings.db.lookup('127.0.0.1').to_hash.to_json + "\nIMOK\n"
+  settings.db.get('1.1.1.1').to_hash.to_json + "\nIMOK\n"
 end

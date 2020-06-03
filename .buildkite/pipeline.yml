@@ -1,0 +1,18 @@
+steps:
+  - label: ":docker: build and push runtime image"
+    command: .buildkite/scripts/docker-build.sh
+    env:
+      CACHE_ID: ${CACHE_ID}
+      DOCKER_TAG: ${DOCKER_TAG}
+      LICENSE_KEY: ssm-parameter:/build/tc-geoip/LICENSE_KEY
+      LICENSE_USERID: ssm-parameter:/build/tc-geoip/LICENSE_USERID
+
+  - wait
+
+  - label: Push new Spacepods component build
+    plugins:
+      - https://git.corp.tc/infra/spacepods-buildkite-plugin.git#v6:
+          component_name: ${BUILDKITE_PIPELINE_SLUG}
+    env:
+      SPACEPODS_API_TOKEN: ssm-parameter:/build/common/spacepods-api-token
+      IMAGE_TAG: ${IMAGE_TAG}
