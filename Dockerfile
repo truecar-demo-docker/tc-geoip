@@ -14,8 +14,8 @@ RUN apt-get update && apt-get install -y \
     curl \
     libpq-dev \
     net-tools \
-    python \
-    python-pip \
+    python3 \
+    python3-pip \
     software-properties-common \
   && pip --no-cache-dir install --upgrade pip \
   && pip --no-cache-dir install awscli \
