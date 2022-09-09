@@ -1,4 +1,4 @@
-FROM ruby:2.5
+FROM ruby:2.7
 
 ENV LC_ALL=C.UTF-8
 ENV LANG=C.UTF-8
@@ -22,18 +22,16 @@ RUN apt-get update && apt-get install -y \
   && update-ca-certificates \
   && rm -rf /var/lib/apt/lists/*
 
-RUN gem install --no-document \
-    ddtrace \
-    maxmind-db \
-    puma \
-    rack \
-    sinatra \
-  && echo 'Gem finish'
+RUN gem install --no-document bundler
 
 RUN curl -Ls https://github.com/maxmind/geoipupdate/releases/download/v4.3.0/geoipupdate_4.3.0_linux_386.tar.gz | tar xvfz - --strip=1 -C /usr/bin geoipupdate_4.3.0_linux_386/geoipupdate
 
 RUN mkdir -p /maxminddb
 WORKDIR /maxminddb
+
+ADD Gemfile Gemfile.lock .
+
+RUN bundle install
 
 ADD https://raw.git.corp.tc/infra/universal-build-script/master/secrets.sh .
 RUN chmod +x ./secrets.sh
