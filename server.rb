@@ -9,9 +9,9 @@ set :server, :puma
 set :logging, nil
 
 Datadog.configure do |c|
-  c.tracer hostname: '172.17.0.1'
-  c.use :sinatra, { service_name: 'tc-geoip.sinatra' }
-  c.use :rack, { quantize: { query: { show: ['ip'] } }, service_name: 'tc-geoip.rack', request_queuing: true, web_service_name: 'aws/alb' }
+  c.agent.host = '172.17.0.1'
+  c.tracing.instrument :sinatra, { service_name: 'tc-geoip.sinatra' }
+  c.tracing.instrument :rack, { quantize: { query: { show: ['ip'] } }, service_name: 'tc-geoip.rack', request_queuing: true, web_service_name: 'aws/alb' }
 end
 
 configure do
