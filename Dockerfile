@@ -29,7 +29,7 @@ RUN curl -Ls https://github.com/maxmind/geoipupdate/releases/download/v4.3.0/geo
 RUN mkdir -p /maxminddb
 WORKDIR /maxminddb
 
-ADD Gemfile Gemfile.lock .
+COPY Gemfile Gemfile.lock .
 
 RUN bundle install
 
