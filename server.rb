@@ -29,5 +29,5 @@ end
 
 get %r>/internal/(health|test)/?> do
   content_type 'text/plain'
-  settings.db.get('1.1.1.1').to_hash.to_json + "\nIMOK\n"
+  settings.db.get('8.8.8.8').to_hash.to_json + "\nIMOK\n"
 end
