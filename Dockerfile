@@ -7,19 +7,10 @@ ENV RACK_ENV=production
 
 ARG LICENSE_KEY
 
-RUN apt update && apt install -y \
-  awscli \
-  apt-utils \
-  build-essential \
-  curl \
-  libpq-dev \
-  net-tools \
-  software-properties-common
+RUN apt update && apt install -y curl
 
 RUN update-ca-certificates
 RUN rm -rf /var/lib/apt/lists/*
-
-RUN curl -LS "https://download.maxmind.com/app/geoip_download?edition_id=GeoIP2-City&license_key=${LICENSE_KEY}&suffix=tar.gz" | tar xvfz - --strip=1 --wildcards GeoIP2-City_*/GeoIP2-City.mmdb
 
 WORKDIR /maxminddb
 
@@ -29,6 +20,8 @@ RUN bundle install
 
 COPY server.rb .
 COPY config ./config
+
+RUN curl -Ls "https://download.maxmind.com/app/geoip_download?edition_id=GeoIP2-City&license_key=${LICENSE_KEY}&suffix=tar.gz" | tar xvfz - --strip=1 --wildcards GeoIP2-City_*/GeoIP2-City.mmdb
 
 EXPOSE 8080
 
