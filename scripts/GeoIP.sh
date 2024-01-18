@@ -1,4 +1,5 @@
-#!/bin/bash
+#!/usr/bin/env bash
+
 set -e
 
 cat << EOF > /usr/local/etc/GeoIP.conf
