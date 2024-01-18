@@ -6,7 +6,6 @@ ENV LANGUAGE=C.UTF-8
 ENV RACK_ENV=production
 
 ARG LICENSE_KEY
-ARG LICENSE_USERID
 
 RUN apt update && apt install -y \
   awscli \
