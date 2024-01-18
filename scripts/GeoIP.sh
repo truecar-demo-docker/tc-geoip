@@ -16,10 +16,9 @@ cat << EOF > /usr/local/etc/GeoIP.conf
 LicenseKey $LICENSE_KEY
 
 # Enter your User ID here
-UserId $LICENSE_USERID
+AccountID $LICENSE_USERID
 
 # Enter the Product ID(s) of the database(s) you would like to update
 # By default 106 (MaxMind GeoIP Country) is listed below
-ProductIds GeoIP2-City
-
+EditionIDs GeoIP2-City
 EOF

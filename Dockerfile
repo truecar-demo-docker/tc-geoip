@@ -28,14 +28,11 @@ COPY Gemfile Gemfile.lock ./
 
 RUN bundle install
 
-ADD https://raw.git.corp.tc/infra/universal-build-script/master/secrets.sh .
-RUN chmod +x ./secrets.sh
-
 COPY server.rb .
 COPY config ./config
+COPY --chmod=755 scripts/GeoIP.sh /usr/local/bin/
 
-COPY scripts/GeoIP.sh /usr/local/bin/
-RUN chmod a+x /usr/local/bin/GeoIP.sh && /usr/local/bin/GeoIP.sh
+RUN /usr/local/bin/GeoIP.sh
 
 # This is a cache-buster
 ADD https://www.random.org/integers/?num=1&min=1&max=1000&col=1&base=10&format=plain&rnd=new .
