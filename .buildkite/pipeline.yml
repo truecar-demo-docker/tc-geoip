@@ -5,7 +5,6 @@ steps:
       CACHE_ID: ${CACHE_ID}
       DOCKER_TAG: ${DOCKER_TAG}
       LICENSE_KEY: ssm-parameter:/build/tc-geoip/LICENSE_KEY
-      LICENSE_USERID: ssm-parameter:/build/tc-geoip/LICENSE_USERID
 
   - wait
 

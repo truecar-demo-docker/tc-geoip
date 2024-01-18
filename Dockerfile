@@ -20,7 +20,7 @@ RUN apt update && apt install -y \
 RUN update-ca-certificates
 RUN rm -rf /var/lib/apt/lists/*
 
-RUN curl -Ls https://github.com/maxmind/geoipupdate/releases/download/v6.1.0/geoipupdate_6.1.0_linux_386.tar.gz | tar xvfz - --strip=1 -C /usr/bin geoipupdate_6.1.0_linux_386/geoipupdate
+RUN curl -LS "https://download.maxmind.com/app/geoip_download?edition_id=GeoIP2-City&license_key=${LICENSE_KEY}&suffix=tar.gz" | tar xvfz - --strip=1 --wildcards GeoIP2-City_*/GeoIP2-City.mmdb
 
 WORKDIR /maxminddb
 
@@ -30,13 +30,6 @@ RUN bundle install
 
 COPY server.rb .
 COPY config ./config
-COPY --chmod=755 scripts/GeoIP.sh /usr/local/bin/
-
-RUN /usr/local/bin/GeoIP.sh
-
-# This is a cache-buster
-ADD https://www.random.org/integers/?num=1&min=1&max=1000&col=1&base=10&format=plain&rnd=new .
-RUN /usr/bin/geoipupdate -f /usr/local/etc/GeoIP.conf -d /maxminddb
 
 EXPOSE 8080
 
