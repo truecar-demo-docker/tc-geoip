@@ -19,9 +19,10 @@ COPY Gemfile Gemfile.lock ./
 RUN bundle install
 
 COPY server.rb .
+COPY --chmod=755 scripts/GeoIP.sh /usr/local/bin
 COPY config ./config
 
-RUN curl -Ls "https://download.maxmind.com/app/geoip_download?edition_id=GeoIP2-City&license_key=${LICENSE_KEY}&suffix=tar.gz" | tar xvfz - --strip=1 --wildcards GeoIP2-City_*/GeoIP2-City.mmdb
+RUN /usr/local/bin/GeoIP.sh
 
 EXPOSE 8080
 
