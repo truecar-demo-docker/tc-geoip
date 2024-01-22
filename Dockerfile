@@ -7,7 +7,7 @@ ENV RACK_ENV=production
 
 ARG LICENSE_KEY
 
-RUN apt update && apt install -y curl
+RUN apt update && apt install -y awscli curl
 
 RUN update-ca-certificates
 RUN rm -rf /var/lib/apt/lists/*
@@ -17,6 +17,9 @@ WORKDIR /maxminddb
 COPY Gemfile Gemfile.lock ./
 
 RUN bundle install
+
+ADD https://raw.git.corp.tc/infra/universal-build-script/master/secrets.sh .
+RUN chmod +x ./secrets.sh
 
 COPY server.rb .
 COPY --chmod=755 scripts/GeoIP.sh /usr/local/bin
