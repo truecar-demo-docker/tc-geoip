@@ -5,16 +5,16 @@ MAX_THREADS = 16
 MAX_WORKERS = 32
 
 max_threads = [
-  ENV.fetch('PUMA_THREADS_MAX') { 0 }.to_i,
-  ENV.fetch('PUMA_THREADS') { 0 }.to_i,
-  ENV.fetch('PUMA_THREADS_MIN') { 0 }.to_i,
+  ENV.fetch('PUMA_THREADS_MAX', 0).to_i,
+  ENV.fetch('PUMA_THREADS', 0).to_i,
+  ENV.fetch('PUMA_THREADS_MIN', 0).to_i
 ].max
 max_threads = max_threads.between?(1, MAX_THREADS) ? max_threads : DEFAULT_THREADS
 
 min_threads = [
   ENV.fetch('PUMA_THREADS_MAX') { MAX_THREADS + 1 }.to_i,
   ENV.fetch('PUMA_THREADS') { MAX_THREADS + 1 }.to_i,
-  ENV.fetch('PUMA_THREADS_MIN') { MAX_THREADS + 1 }.to_i,
+  ENV.fetch('PUMA_THREADS_MIN') { MAX_THREADS + 1 }.to_i
 ].min
 min_threads = min_threads.between?(0, MAX_THREADS) ? min_threads : DEFAULT_THREADS
 

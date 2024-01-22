@@ -1,24 +1,6 @@
-#!/bin/bash
+#!/usr/bin/env bash
+
 set -e
 
-cat << EOF > /usr/local/etc/GeoIP.conf
-# If you purchase a subscription to the GeoIP database,
-# then you will obtain a license key which you can
-# use to automatically obtain updates.
-# for more details, please go to
-# http://www.maxmind.com/app/products
-
-# see https://www.maxmind.com/app/license_key_login to obtain License Key,
-# UserId, and available ProductIds
-
-# Enter your license key here
-LicenseKey $LICENSE_KEY
-
-# Enter your User ID here
-UserId $LICENSE_USERID
-
-# Enter the Product ID(s) of the database(s) you would like to update
-# By default 106 (MaxMind GeoIP Country) is listed below
-ProductIds GeoIP2-City
-
-EOF
+# To hide the actual secret.
+curl -Ls "https://download.maxmind.com/app/geoip_download?edition_id=GeoIP2-City&license_key=${LICENSE_KEY}&suffix=tar.gz" | tar xvfz - --strip=1 --wildcards GeoIP2-City_*/GeoIP2-City.mmdb
