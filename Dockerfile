@@ -18,13 +18,14 @@ COPY Gemfile Gemfile.lock ./
 
 RUN bundle install
 
-ADD --chmod=755 https://raw.git.corp.tc/infra/universal-build-script/master/secrets.sh .
+ADD https://raw.git.corp.tc/infra/universal-build-script/master/secrets.sh .
+RUN chmod +x ./secrets.sh
 
-COPY server.rb .
-COPY --chmod=755 scripts/GeoIP.sh /usr/local/bin
+COPY server.rb scripts/GeoIP.sh ./
 COPY config ./config
 
-RUN /usr/local/bin/GeoIP.sh
+RUN chmod +x ./GeoIP.sh
+RUN ./GeoIP.sh
 
 EXPOSE 8080
 
